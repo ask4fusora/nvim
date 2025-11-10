@@ -30,20 +30,19 @@ vim.keymap.set("", "<M-L>", function()
 end)
 
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("LspAttach", { clear = true }),
+  group = vim.api.nvim_create_augroup("LspAutocmd", { clear = false }),
   callback = function(args)
     -- The LSP client that has just been prepended to the LSP client list.
     local client = vim.lsp.get_clients({ bufnr = args.buf })[1]
 
-    if client:supports_method("textDocument/completion") then
+    if client.server_capabilities.completionProvider then
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
     end
 
-    if client:supports_method("textDocument/inlayHint") then
+    if client.server_capabilities.inlayHintProvider then
       vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
 
       vim.api.nvim_create_autocmd("ModeChanged", {
-        group = vim.api.nvim_create_augroup("InlayHintToggle", { clear = true }),
         callback = function()
           vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
         end
