@@ -14,7 +14,8 @@ vim.lsp.enable({
   "ruff",
   "tombi",
   "powershell-es",
-  "typescript-language-server"
+  "typescript-language-server",
+  "rust-analyzer"
 })
 
 vim.keymap.set("", "<M-L>", function()
@@ -39,19 +40,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 
     if client:supports_method("textDocument/inlayHint") then
-      vim.lsp.inlay_hint.enable(true)
+      vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
 
-      vim.api.nvim_create_autocmd("InsertEnter", {
-        group = vim.api.nvim_create_augroup("InlayHintEnter", { clear = true }),
+      vim.api.nvim_create_autocmd("ModeChanged", {
+        group = vim.api.nvim_create_augroup("InlayHintToggle", { clear = true }),
         callback = function()
-          vim.lsp.inlay_hint.enable(false)
-        end
-      })
-
-      vim.api.nvim_create_autocmd("InsertLeave", {
-        group = vim.api.nvim_create_augroup("InlayHintLeave", { clear = true }),
-        callback = function()
-          vim.lsp.inlay_hint.enable(true)
+          vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
         end
       })
     end
