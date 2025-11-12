@@ -27,3 +27,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
     editorconfig.properties.end_of_line(bufnr, "lf")
   end
 })
+
+-- help
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "help",
+  callback = function() vim.cmd.wincmd("L") end
+})
