@@ -18,17 +18,6 @@ vim.lsp.enable({
   "rust-analyzer"
 })
 
-vim.keymap.set("", "<M-L>", function()
-  local clients = vim.lsp.get_clients()
-
-  vim.notify(string.format("[LSP] Restarting language servers..."), vim.log.levels.DEBUG)
-
-  for _, client in ipairs(clients) do
-    vim.lsp.enable(client.name, false)
-    vim.lsp.enable(client.name, true)
-  end
-end)
-
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspAutocmd", { clear = false }),
   callback = function(args)
@@ -48,6 +37,27 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
       })
     end
+
+    if client.server_capabilities.documentHighlightProvider then
+      local lsp_document_highlight_augroup = vim.api.nvim_create_augroup(
+        "LspDocumentHighlight" .. client.name,
+        { clear = true }
+      )
+
+      vim.o.updatetime = 55
+
+      vim.api.nvim_create_autocmd("CursorHold", {
+        group = lsp_document_highlight_augroup,
+        callback = function()
+          vim.lsp.buf.document_highlight()
+        end
+      })
+
+      vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved" }, {
+        group = lsp_document_highlight_augroup,
+        callback = function() vim.lsp.buf.clear_references() end
+      })
+    end
   end,
 })
 
@@ -55,4 +65,12 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function()
     vim.lsp.buf.format()
   end,
+})
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function() vim.lsp.buf.document_highlight() end
+})
+
+vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+  callback = function() vim.lsp.buf.clear_references() end
 })
