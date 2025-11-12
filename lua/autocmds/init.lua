@@ -1,3 +1,5 @@
+-- yank utils
+
 vim.api.nvim_create_autocmd({ "VimEnter", "CursorMoved" }, {
   callback = function() vim.g.cursor_position = vim.fn.getpos(".") end
 })
@@ -9,10 +11,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end
 })
 
+-- editorconfig
+
 vim.api.nvim_create_autocmd("BufEnter", {
   group = vim.api.nvim_create_augroup("BufEnterEditorConfig", { clear = true }),
   callback = function(args)
     local bufnr = args.buf
+
+    if not vim.api.nvim_get_option_value("modifiable", { buf = bufnr }) then return end
+
     local editorconfig = require("editorconfig")
 
     editorconfig.properties.trim_trailing_whitespace(bufnr, "true")
