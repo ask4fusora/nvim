@@ -56,12 +56,18 @@ vim.api.nvim_create_autocmd("LspAttach", {
         callback = function() vim.lsp.buf.clear_references() end
       })
     end
-  end,
-})
 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  callback = function()
-    vim.lsp.buf.format()
+    if client.server_capabilities.documentFormattingProvider then
+      local lsp_format_on_save_augroup = vim.api.nvim_create_augroup(
+        "LspFormatOnSave" .. client.name,
+        { clear = true }
+      )
+
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = lsp_format_on_save_augroup,
+        callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id }) end,
+      })
+    end
   end,
 })
 
