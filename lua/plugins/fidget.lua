@@ -1,3 +1,7 @@
 vim.pack.add({ { src = "https://github.com/j-hui/fidget.nvim" } })
 
-require("fidget").setup({})
+local fidget = require("fidget")
+
+fidget.setup({})
+
+vim.notify = fidget.notify
