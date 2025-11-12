@@ -17,5 +17,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
     editorconfig.properties.trim_trailing_whitespace(bufnr, "true")
     editorconfig.properties.insert_final_newline(bufnr, "true")
+    editorconfig.properties.end_of_line(bufnr, "lf")
   end
 })
