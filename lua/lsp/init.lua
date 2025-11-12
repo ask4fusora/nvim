@@ -46,14 +46,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
       vim.o.updatetime = 55
 
-      vim.api.nvim_create_autocmd("CursorHold", {
+      vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
         group = lsp_document_highlight_augroup,
-        callback = function()
-          vim.lsp.buf.document_highlight()
-        end
+        callback = function() vim.lsp.buf.document_highlight() end
       })
 
-      vim.api.nvim_create_autocmd({ "CursorMovedI", "CursorMoved" }, {
+      vim.api.nvim_create_autocmd("CursorMoved", {
         group = lsp_document_highlight_augroup,
         callback = function() vim.lsp.buf.clear_references() end
       })
