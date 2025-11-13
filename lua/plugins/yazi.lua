@@ -14,4 +14,4 @@ vim.api.nvim_create_autocmd("UIEnter", {
   end,
 })
 
-vim.keymap.set("n", "<C-E>", function() yazi.yazi() end)
+vim.keymap.set("n", "<leader>e", function() yazi.yazi() end)
