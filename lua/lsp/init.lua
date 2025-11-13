@@ -21,8 +21,8 @@ vim.lsp.enable({
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspAutocmd", { clear = false }),
   callback = function(args)
-    -- The LSP client that has just been prepended to the LSP client list.
-    local client = vim.lsp.get_clients({ bufnr = args.buf })[1]
+    local clients = vim.lsp.get_clients({ bufnr = args.buf })
+    local client = clients[#clients] -- The LSP client that has just been appended to the LSP client list.
 
     if client.server_capabilities.completionProvider then
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
