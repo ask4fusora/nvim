@@ -1,6 +1,15 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { "biome", "lsp-proxy" },
+  cmd = function(dispatchers, config)
+    local cmd = 'biome'
+    local local_cmd = (config or {}).root_dir and config.root_dir .. '/node_modules/.bin/biome'
+
+    if local_cmd and vim.fn.executable(local_cmd) == 1 then
+      cmd = local_cmd
+    end
+
+    return vim.lsp.rpc.start({ cmd, 'lsp-proxy' }, dispatchers)
+  end,
   filetypes = {
     "astro",
     "css",
@@ -23,7 +32,7 @@ return {
     local project_root = vim.fs.root(bufnr, root_markers) or vim.fn.getcwd()
     local biome_config_files = { 'biome.json', 'biome.jsonc' }
     local biome_config_file_finds = vim.fs.find(biome_config_files, {
-      path = vim.fs.dirname(filename),
+      path = filename,
       stop = vim.fs.dirname(project_root),
       type = 'file',
       limit = 1,
