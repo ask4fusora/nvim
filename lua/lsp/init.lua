@@ -19,10 +19,12 @@ vim.lsp.enable({
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("LspAutocmd", { clear = false }),
+  group = vim.api.nvim_create_augroup("LspAttachAutocmd", { clear = false }),
   callback = function(args)
     local clients = vim.lsp.get_clients({ bufnr = args.buf })
-    local client = clients[#clients] -- The LSP client that has just been appended to the LSP client list.
+    local client = clients[1] -- The newest client that has been prepended to the array
+
+    vim.notify(client.name .. " attached.", vim.log.levels.INFO, { group = "LspAttach" })
 
     if client.server_capabilities.completionProvider then
       vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
