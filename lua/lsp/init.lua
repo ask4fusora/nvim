@@ -34,6 +34,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
 
       vim.api.nvim_create_autocmd("ModeChanged", {
+        buffer = args.buf,
         callback = function()
           vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
         end
@@ -49,11 +50,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
       vim.o.updatetime = 55
 
       vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+        buffer = args.buf,
         group = lsp_document_highlight_augroup,
         callback = function() vim.lsp.buf.document_highlight() end
       })
 
       vim.api.nvim_create_autocmd("CursorMoved", {
+        buffer = args.buf,
         group = lsp_document_highlight_augroup,
         callback = function() vim.lsp.buf.clear_references() end
       })
@@ -66,17 +69,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
       )
 
       vim.api.nvim_create_autocmd("BufWritePre", {
+        buffer = args.buf,
         group = lsp_format_on_save_augroup,
         callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id }) end,
       })
     end
   end,
-})
-
-vim.api.nvim_create_autocmd("CursorHold", {
-  callback = function() vim.lsp.buf.document_highlight() end
-})
-
-vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-  callback = function() vim.lsp.buf.clear_references() end
 })
