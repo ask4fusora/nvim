@@ -1,4 +1,4 @@
-vim.o.clipboard = vim.o.clipboard .. "unnamedplus"
+vim.o.clipboard = vim.o.clipboard .. "unnamedplus,unnamed"
 
 vim.o.expandtab = true
 vim.o.shiftwidth = 2
