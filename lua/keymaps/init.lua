@@ -9,10 +9,6 @@ vim.keymap.set("n", "[ ", function() for _ = 1, vim.v.count1 do vim.fn.append(vi
 vim.keymap.set("", "<M-F>", function() vim.lsp.buf.format({ async = true }) end)
 
 if util.platform.windows() then vim.keymap.set("i", "<F13>", "<C-x><C-o>", { noremap = true, silent = true }) end
-vim.keymap.set("i", "<CR>",
-  function() return vim.fn.pumvisible() == 1 and "<C-y>" or "<CR>" end,
-  { expr = true, noremap = true }
-)
 vim.keymap.set("i", "<Tab>",
   function() return vim.fn.pumvisible() == 1 and "<C-y>" or "<Tab>" end,
   { expr = true, noremap = true }
