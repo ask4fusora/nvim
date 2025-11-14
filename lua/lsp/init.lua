@@ -54,22 +54,15 @@ local setup_lsp_capabilities = function(client, args)
   -- DocumentHighlight
 
   if client.server_capabilities.documentHighlightProvider then
-    local lsp_document_highlight_augroup = vim.api.nvim_create_augroup(
-      "LspDocumentHighlight" .. client.name,
-      { clear = true }
-    )
-
     vim.o.updatetime = 55
 
     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       buffer = args.buf,
-      group = lsp_document_highlight_augroup,
       callback = function() vim.lsp.buf.document_highlight() end
     })
 
     vim.api.nvim_create_autocmd("CursorMoved", {
       buffer = args.buf,
-      group = lsp_document_highlight_augroup,
       callback = function() vim.lsp.buf.clear_references() end
     })
   end
@@ -77,15 +70,12 @@ local setup_lsp_capabilities = function(client, args)
   -- DocumentFormatting
 
   if client.server_capabilities.documentFormattingProvider then
-    local lsp_format_on_save_augroup = vim.api.nvim_create_augroup(
-      "LspFormatOnSave" .. client.name,
-      { clear = true }
-    )
+    local lsp_format_on_save_augroup = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = false })
 
     vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = args.buf,
       group = lsp_format_on_save_augroup,
-      callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id }) end,
+      buffer = args.buf,
+      callback = function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 3000 }) end,
     })
   end
 end
