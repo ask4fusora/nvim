@@ -14,3 +14,4 @@ vim.keymap.set("n", "gI", function() vim.lsp.buf.implementation() end)
 vim.keymap.set("n", "gA", function() vim.lsp.buf.references() end)
 
 vim.keymap.set("n", "cd", function() vim.lsp.buf.rename() end)
+vim.keymap.set("n", "g.", function() vim.lsp.buf.code_action() end)
