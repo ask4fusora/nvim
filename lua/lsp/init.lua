@@ -31,13 +31,13 @@ local setup_lsp_capabilities = function(client, args)
   -- Inlay hint
 
   if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(vim.api.nvim_get_mode().mode == "n")
+    vim.lsp.inlay_hint.enable(vim.fn.mode() == "n")
 
     vim.api.nvim_create_autocmd("ModeChanged", {
       buffer = args.buf,
       callback = function()
-        local to_be_normal_mode = vim.api.nvim_get_mode().mode == "n"
-        vim.lsp.inlay_hint.enable(to_be_normal_mode, { bufnr = args.buf })
+        local is_normal_mode = vim.fn.mode() == "n"
+        vim.lsp.inlay_hint.enable(is_normal_mode, { bufnr = args.buf })
       end
     })
   end
