@@ -61,7 +61,7 @@ end
 
 insert_left {
   function() return ' ' end,
-  padding = { left = 0 },
+  padding = { left = 0, right = 0 },
 }
 
 insert_left {
