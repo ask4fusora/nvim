@@ -25,8 +25,8 @@ return {
     if not workspace_folders then return end
 
     local workspace_folder = vim.fn.expand(workspace_folders[1].name)
-    local to_be_under_dot_nvim = vim.api.nvim_buf_get_name(0):find(".nvim", 1, true) and true or false
-    local to_load_vimruntime = workspace_folder == vim.fn.stdpath("config") or to_be_under_dot_nvim
+    local is_in_dotnvim = vim.api.nvim_buf_get_name(0):find(".nvim", 1, true) and true or false
+    local to_load_vimruntime = workspace_folder == vim.fn.stdpath("config") or is_in_dotnvim
 
     if not to_load_vimruntime then return end
 
