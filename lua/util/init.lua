@@ -1,5 +1,7 @@
 local M = {}
 
+M.is_window = function() return vim.fn.has("win32") end
+
 --- Filters a list based on a predicate function.
 ---@generic T
 ---@param array T[] The list to filter.
