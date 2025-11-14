@@ -60,9 +60,8 @@ local insert_right = function(component)
 end
 
 insert_left {
-  function() return '▊' end,
-  color = { fg = palette.sapphire },
-  padding = { left = 0, right = 1 },
+  function() return ' ' end,
+  padding = { left = 0 },
 }
 
 insert_left {
@@ -119,9 +118,8 @@ insert_right {
 }
 
 insert_right {
-  function() return '▊' end,
-  color = { fg = palette.sapphire },
-  padding = { left = 1, right = 0 },
+  function() return ' ' end,
+  padding = { right = 0 }
 }
 
 lualine.setup(config)
