@@ -67,7 +67,13 @@ insert_left {
 insert_left {
   'filename',
   cond = condition.is_buffer_name_nonempty,
-  color = { fg = palette.mauve, gui = 'bold' },
+  color = function()
+    if vim.bo.modified then
+      return { fg = palette.yellow }
+    end
+
+    return { fg = palette.text }
+  end,
   padding = default_padding
 }
 
