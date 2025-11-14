@@ -30,6 +30,8 @@ return {
 
     if not to_load_vimruntime then return end
 
+    vim.g.vimruntime = true
+
     local lua_settings = client.config.settings.Lua
 
     if type(lua_settings) == "table" then

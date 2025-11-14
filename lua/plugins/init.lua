@@ -1,6 +1,6 @@
 require("plugins.fidget")
 require("plugins.catppuccin")
 require("plugins.nvim-treesitter")
-require("plugins.mini-pick")
+require("plugins.telescope")
 require("plugins.yazi")
 require("plugins.zen-mode")
