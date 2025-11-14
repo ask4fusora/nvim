@@ -1,5 +1,4 @@
 require("plugins.catppuccin")
-require("plugins.which-key")
 require("plugins.lualine")
 require("plugins.fidget")
 require("plugins.telescope")
