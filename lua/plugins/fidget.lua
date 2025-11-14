@@ -2,6 +2,12 @@ vim.pack.add({ { src = "https://github.com/j-hui/fidget.nvim" } })
 
 local fidget = require("fidget")
 
-fidget.setup({})
+fidget.setup({
+  notification = {
+    window = {
+      align = "top"
+    }
+  }
+})
 
 vim.notify = fidget.notify
