@@ -56,12 +56,12 @@ local setup_lsp_capabilities = function(client, args)
   if client.server_capabilities.documentHighlightProvider then
     vim.o.updatetime = 55
 
-    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+    vim.api.nvim_create_autocmd({ "CursorHold" }, {
       buffer = args.buf,
       callback = function() vim.lsp.buf.document_highlight() end
     })
 
-    vim.api.nvim_create_autocmd("CursorMoved", {
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
       buffer = args.buf,
       callback = function() vim.lsp.buf.clear_references() end
     })
