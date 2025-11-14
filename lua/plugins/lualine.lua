@@ -84,8 +84,9 @@ insert_left {
 
 insert_left {
   'branch',
-  icon = '',
+  icon = '',
   color = { fg = palette.text },
+  padding = { left = 0 }
 }
 
 insert_left {
