@@ -1,6 +1,12 @@
 local M = {}
 
-M.is_window = function() return vim.fn.has("win32") end
+local platform = {
+  windows = function() return vim.fn.has("win32") end,
+  macos = function() return vim.fn.has("mac") end,
+  linux = function() return vim.fn.has("linux") end
+}
+
+M.platform = platform
 
 --- Filters a list based on a predicate function.
 ---@generic T
