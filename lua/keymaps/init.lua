@@ -13,9 +13,9 @@ vim.keymap.set("i", "<Tab>",
   { expr = true, noremap = true }
 )
 
-vim.keymap.set("n", "[r", require("keymaps.lsp-reference").go_to_previous_reference)
-vim.keymap.set("n", "]r", require("keymaps.lsp-reference").go_to_next_reference)
-vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
+vim.keymap.set("n", "[r", require("lsp.reference").go_to_previous_reference)
+vim.keymap.set("n", "]r", require("lsp.reference").go_to_next_reference)
+vim.keymap.set("n", "gd", require("lsp.definition").go_to_definition)
 vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end)
 vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
 vim.keymap.set("n", "gI", function() vim.lsp.buf.implementation() end)
