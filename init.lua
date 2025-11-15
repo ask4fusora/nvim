@@ -36,6 +36,7 @@ vim.g.loaded_ruby_provider = 0
 
 vim.g.mapleader = " "
 
+require("session")
 require("exrc")
 require("keymaps")
 require("plugins")
