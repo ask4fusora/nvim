@@ -78,5 +78,8 @@ vim.api.nvim_create_autocmd("VimEnter", {
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
   group = session_group,
-  callback = function() save_session() end,
+  callback = function()
+    if vim.fn.argc() ~= 0 then return end
+    save_session()
+  end,
 })
