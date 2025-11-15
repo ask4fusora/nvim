@@ -9,6 +9,7 @@ local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<C-P>', builtin.find_files, { desc = 'Telescope find files' })
 vim.keymap.set('n', 'g/', builtin.live_grep, { desc = 'Telescope live grep' })
 vim.keymap.set('n', '	', builtin.buffers, { desc = 'Telescope buffers' })
+vim.keymap.set("n", "gA", builtin.lsp_references)
 vim.keymap.set('n',
   '<leader>h',
   function() if vim.g.vimruntime then builtin.help_tags() end end,
