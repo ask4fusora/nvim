@@ -1,5 +1,3 @@
-local util = require("util")
-
 vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })
 
 vim.keymap.set("", "<C-s>", function() vim.cmd.update() end, { silent = true })
@@ -9,12 +7,14 @@ vim.keymap.set("n", "] ", function() for _ = 1, vim.v.count1 do vim.fn.append(vi
 vim.keymap.set("n", "[ ", function() for _ = 1, vim.v.count1 do vim.fn.append(vim.fn.line(".") - 1, { "" }) end end)
 vim.keymap.set("", "<M-F>", function() vim.lsp.buf.format({ async = true }) end)
 
-if util.platform.windows() then vim.keymap.set("i", "<F13>", "<C-x><C-o>", { noremap = true, silent = true }) end
+if require("util").platform.windows() then vim.keymap.set("i", "<F13>", "<C-x><C-o>", { noremap = true, silent = true }) end
 vim.keymap.set("i", "<Tab>",
   function() return vim.fn.pumvisible() == 1 and "<C-y>" or "<Tab>" end,
   { expr = true, noremap = true }
 )
 
+vim.keymap.set("n", "[r", require("keymaps.lsp-reference").go_to_previous_reference)
+vim.keymap.set("n", "]r", require("keymaps.lsp-reference").go_to_next_reference)
 vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
 vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end)
 vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
