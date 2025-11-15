@@ -173,6 +173,10 @@ insert_y {
 }
 
 insert_z {
+  'encoding'
+}
+
+insert_z {
   'fileformat',
   fmt = string.upper,
   icons_enabled = false,
