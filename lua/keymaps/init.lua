@@ -1,6 +1,14 @@
+local util = require("util")
+
 local buffer_close = function(to_save)
+  if not util.condition.is_buffer_modifiable()
+      or util.condition.is_buffer_name_empty() then
+    vim.cmd.bd({ bang = true })
+    return
+  end
+
   if to_save then vim.cmd.update() end
-  vim.cmd.bd({ bang = not to_save })
+  vim.cmd.bd({ bang = to_save })
 end
 
 vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })

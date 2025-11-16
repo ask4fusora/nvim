@@ -109,8 +109,23 @@ local is_git_workspace = function()
   return gitdir and #gitdir > 0 and #gitdir < #filepath
 end
 
+---@param bufnr integer?
+local is_buffer_name_empty = function(bufnr)
+  bufnr = bufnr or 0
+  return vim.fn.empty(vim.api.nvim_buf_get_name(0)) == 1
+end
+
+---@param bufnr integer?
+---@return boolean
+local is_buffer_modifiable = function(bufnr)
+  bufnr = bufnr or 0
+  return vim.api.nvim_get_option_value("modifiable", { buf = bufnr })
+end
+
 M.condition = {
-  is_git_workspace = is_git_workspace
+  is_git_workspace = is_git_workspace,
+  is_buffer_name_empty = is_buffer_name_empty,
+  is_buffer_modifiable = is_buffer_modifiable,
 }
 
 M.debug = {
