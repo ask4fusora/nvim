@@ -26,7 +26,10 @@ return {
 
     local workspace_folder = vim.fn.expand(workspace_folders[1].name)
     local is_in_dotnvim = vim.api.nvim_buf_get_name(0):find(".nvim", 1, true) and true or false
-    local to_load_vimruntime = workspace_folder == vim.fn.stdpath("config") or is_in_dotnvim
+    local to_load_vimruntime =
+        workspace_folder == vim.fn.stdpath("config")
+        or is_in_dotnvim
+        or vim.g.to_load_vimruntime
 
     if not to_load_vimruntime then return end
 
