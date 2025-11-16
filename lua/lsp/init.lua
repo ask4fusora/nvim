@@ -82,13 +82,8 @@ end
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspAttachAutocmd", { clear = true }),
   callback = function(args)
-    local client_id = args.data.client_id ---@type integer?
-
-    if not client_id then return end
-
     -- The newest client that has been prepended to the array
-    local client = vim.lsp.get_clients({ bufnr = args.buf, id = client_id })[1]
-
+    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
     setup_lsp_capabilities(client, args)
   end,
 })
