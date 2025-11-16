@@ -76,7 +76,6 @@ local condition = {
   end,
 }
 
-
 local config = {
   options = {
     -- Disable sections and component separators
