@@ -64,17 +64,7 @@ theme.visual.z.bg = transparent_background
 theme.replace.z.bg = transparent_background
 theme.inactive.z.bg = transparent_background
 
-local condition = {
-  is_buffer_name_nonempty = function()
-    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-  end,
-  is_git_workspace = function()
-    local filepath = vim.fn.expand('%:p:h')
-    local gitdir = vim.fn.finddir('.git', filepath .. ';')
-
-    return gitdir and #gitdir > 0 and #gitdir < #filepath
-  end,
-}
+local condition = require('util').condition
 
 local config = {
   options = {
@@ -136,7 +126,7 @@ insert_c {
 
 insert_c {
   'filename',
-  cond = condition.is_buffer_name_nonempty,
+  cond = function() return not condition.is_buffer_name_empty() end,
   color = function()
     if vim.bo.modified then
       return { fg = palette.yellow }
