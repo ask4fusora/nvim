@@ -12,6 +12,7 @@ vim.defer_fn(
     require("plugins.zeta")
     require("plugins.lspkind")
     require("plugins.mini-completion")
+    require("plugins.gitsigns")
   end,
   1
 )
