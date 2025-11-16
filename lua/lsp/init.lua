@@ -39,7 +39,8 @@ local setup_lsp_capabilities = function(client, args)
 
   -- Inlay hint
 
-  if client.server_capabilities.inlayHintProvider then
+  if client.server_capabilities.inlayHintProvider
+      and vim.g.is_inlay_hint_auto then
     vim.api.nvim_create_autocmd("ModeChanged", {
       buffer = args.buf,
       callback = function()

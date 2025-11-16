@@ -11,6 +11,11 @@ local buffer_close = function(to_save)
   vim.cmd.bd({ bang = to_save })
 end
 
+local toggle_inlay_hint = function()
+  local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+  return vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = 0 })
+end
+
 vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })
 
 vim.keymap.set("", "<C-s>", function() vim.cmd.update() end, { silent = true })
@@ -33,6 +38,8 @@ vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end)
 vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
 vim.keymap.set("n", "gI", function() vim.lsp.buf.implementation() end)
 vim.keymap.set("n", "gA", function() vim.lsp.buf.references() end)
+
+vim.keymap.set('n', '<C-S-;>', toggle_inlay_hint)
 
 vim.keymap.set("n", "cd", function() vim.lsp.buf.rename() end)
 vim.keymap.set("n", "g.", function() vim.lsp.buf.code_action() end)
