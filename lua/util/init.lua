@@ -1,7 +1,8 @@
 local M = {
   platform = {},
-  array = { },
-  debug = {}
+  array = {},
+  debug = {},
+  condition = {}
 }
 
 local print_debug_flat
@@ -100,6 +101,17 @@ local find_pos_array = function(array, predicate)
 
   return 0
 end
+
+local is_git_workspace = function()
+  local filepath = vim.fn.expand('%:p:h')
+  local gitdir = vim.fn.finddir('.git', filepath .. ';')
+
+  return gitdir and #gitdir > 0 and #gitdir < #filepath
+end
+
+M.condition = {
+  is_git_workspace = is_git_workspace
+}
 
 M.debug = {
   json = print_debug_json,
