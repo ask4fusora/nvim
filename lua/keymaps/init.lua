@@ -1,6 +1,13 @@
+local buffer_close = function(to_save)
+  if to_save then vim.cmd.update() end
+  vim.cmd.bd({ bang = not to_save })
+end
+
 vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })
 
 vim.keymap.set("", "<C-s>", function() vim.cmd.update() end, { silent = true })
+vim.keymap.set("n", "ZQ", function() buffer_close() end)
+vim.keymap.set("n", "ZZ", function() buffer_close(true) end)
 vim.keymap.set("", "<C-S-W>", function() vim.cmd.qa({ bang = true }) end, { silent = true })
 
 vim.keymap.set("n", "] ", function() for _ = 1, vim.v.count1 do vim.fn.append(vim.fn.line("."), { "" }) end end)
@@ -8,10 +15,8 @@ vim.keymap.set("n", "[ ", function() for _ = 1, vim.v.count1 do vim.fn.append(vi
 vim.keymap.set("", "<M-F>", function() vim.lsp.buf.format({ async = true }) end)
 
 if require("util").platform.windows() then vim.keymap.set("i", "<F13>", "<C-x><C-o>", { noremap = true, silent = true }) end
-vim.keymap.set("i", "<Tab>",
-  function() return vim.fn.pumvisible() == 1 and "<C-y>" or "<Tab>" end,
-  { expr = true, noremap = true }
-)
+local tab_accept = function() return vim.fn.pumvisible() == 1 and "<C-y>" or "<Tab>" end
+vim.keymap.set("i", "<Tab>", tab_accept, { expr = true, noremap = true })
 
 vim.keymap.set("n", "[r", require("lsp.reference").go_to_previous_reference)
 vim.keymap.set("n", "]r", require("lsp.reference").go_to_next_reference)
