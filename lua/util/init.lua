@@ -119,9 +119,9 @@ M.debug = {
 }
 
 M.platform = {
-  windows = function() return vim.fn.has("win32") end,
-  macos = function() return vim.fn.has("mac") end,
-  linux = function() return vim.fn.has("linux") end
+  windows = function() return vim.fn.has("win32") == 1 end,
+  macos = function() return vim.fn.has("mac") == 1 end,
+  linux = function() return vim.fn.has("linux") == 1 end
 }
 
 M.array = {
