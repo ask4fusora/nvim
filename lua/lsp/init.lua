@@ -40,8 +40,6 @@ local setup_lsp_capabilities = function(client, args)
   -- Inlay hint
 
   if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(vim.fn.mode() == "n")
-
     vim.api.nvim_create_autocmd("ModeChanged", {
       buffer = args.buf,
       callback = function()

@@ -16,7 +16,18 @@ return {
   settings = {
     Lua = {
       workspace = {
-        ignoreDir = { ".nvim" } }
+        ignoreDir = { ".nvim" }
+      },
+      hint = {
+        enable         = true,
+        arrayIndex     = true,
+        await          = true,
+        awaitPropagate = true,
+        paramName      = true,
+        paramType      = true,
+        semicolon      = true,
+        setType        = true,
+      }
     }
   },
   on_init = function(client)
