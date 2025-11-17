@@ -1,108 +1,92 @@
 local M = {}
 
-local array = require("util").array
-
----@alias LspReferenceItem {
----  kind: number,
----  range: {
----    start: {
----      line: number,
----      character: number,
----    },
----    end: {
----      line: number,
----      character: number,
----    },
----  },
----}
-
----@param cursor_position [integer, integer] { line, character }
----@param range [integer, integer] { start_column, end_column }
-local is_cursor_in_column_range = function(cursor_position, range)
-  return range[1] <= cursor_position[2] and cursor_position[2] <= range[2]
-end
+local util = require('util')
 
 ---@param items vim.quickfix.entry[]
----@param cursor_position [integer, integer] { line, character }
--- ---
--- Find the index of the symbol the cursor is on in the references list.
-local find_current_reference_index = function(items, cursor_position)
-  return array.find_pos(items, function(item)
-    return item.lnum == cursor_position[1]
-        and is_cursor_in_column_range(cursor_position, { item.col, item.end_col })
+---@param direction "next" | "prev"
+local get_next_index = function(items, direction)
+  local cursor_pos = vim.api.nvim_win_get_cursor(0)
+  local row, col = cursor_pos[1], cursor_pos[2]
+
+  local current_index = util.array.find_pos(items, function(item)
+    -- `character + 1` to convert 0-index col index to 1-index array index
+    return item.lnum == row and util.math.is_in_range(col + 1, {
+      start = item.col,
+      ['end'] = item.end_col,
+    })
   end)
+
+  local next_index = direction == "next"
+      and current_index % #items
+      or (current_index - 2) % #items
+
+  return 1 + next_index -- 0-index system calculation to 1-index system result
 end
 
----@param entry vim.quickfix.entry
-local jump_to = function(entry)
-  return vim.lsp.util.show_document(
-    entry.user_data,
+---@param references vim.quickfix.entry[]
+---@param direction 'next' | 'prev'
+local navigate_to_next_reference = function(references, direction)
+  vim.lsp.util.show_document(
+    references[get_next_index(references, direction)].user_data,
     vim.bo.fileencoding,
     { reuse_win = true, focus = true }
   )
 end
 
----@param modulo integer
----@param current_index integer
----@param direction "next" | "prev"
-local get_next_index = function(modulo, current_index, direction)
-  local next_index = direction == "next"
-      and current_index % modulo
-      or (current_index - 2) % modulo
+---@param result lsp.DocumentHighlight[]
+---@param context lsp.HandlerContext
+---@return vim.quickfix.entry[]
+local get_references_from_lsp_result = function(result, context)
+  local client = assert(vim.lsp.get_client_by_id(context.client_id))
 
-  return 1 + next_index -- 1-indexed system
+  return vim.lsp.util.locations_to_items(
+    util.array.map(result, function(document_highlight)
+      ---@type lsp.Location
+      return { uri = context.params.textDocument.uri, range = document_highlight.range }
+    end),
+    client.offset_encoding
+  )
 end
 
----@param items vim.quickfix.entry[]
----@param direction 'next' | 'prev'
-local navigate = function(items, direction)
-  local cursor_position = vim.api.nvim_win_get_cursor(0)
-  cursor_position[2] = cursor_position[2] + 1 -- Column's index counts differently
+---@param results table<integer, { err: (lsp.ResponseError)?, result: any, context: lsp.HandlerContext }>
+---@return vim.quickfix.entry[]
+local get_all_references = function(results)
+  return util.array.reduce(results, {}, function(references, result)
+    return vim.list_extend(
+      references,
+      get_references_from_lsp_result(result.result or {}, result.context)
+    )
+  end)
+end
 
-  local current_index = find_current_reference_index(items, cursor_position)
-  local target_index = get_next_index(#items, current_index, direction)
-
-  jump_to(items[target_index])
+---@param client vim.lsp.Client
+local get_position_params = function(client)
+  return vim.lsp.util.make_position_params(
+    vim.api.nvim_get_current_win(),
+    client.offset_encoding
+  )
 end
 
 ---@param direction "next" | "prev"
 local go_to_reference = function(direction)
-  local bufnr = vim.api.nvim_get_current_buf()
-  local win = vim.api.nvim_get_current_win()
-
-  vim.lsp.buf_request_all(bufnr, "textDocument/documentHighlight",
-    function(client)
-      return vim.lsp.util.make_position_params(win, client.offset_encoding)
-    end,
+  vim.lsp.buf_request_all(
+    vim.api.nvim_get_current_buf(),
+    "textDocument/documentHighlight",
+    get_position_params,
     function(results)
-      local all_items = {} ---@type vim.quickfix.entry[]
+      local references = get_all_references(results)
 
-      for client_id, result in pairs(results) do
-        local client = assert(vim.lsp.get_client_by_id(client_id))
-        local locations = result.result ---@type LspReferenceItem[]
-
-        if locations then
-          locations = vim.tbl_map(function(location)
-            location.uri = result.context.params.textDocument.uri
-            return location
-          end, locations)
-
-          local items = vim.lsp.util.locations_to_items(locations, client.offset_encoding)
-
-          vim.list_extend(all_items, items)
-        end
-      end
-
-      if not next(all_items) then
+      if not next(references) then
         vim.notify('No references found')
         return
       end
 
-      navigate(all_items, direction)
+      navigate_to_next_reference(references, direction)
     end
   )
 end
 
+M.go_to_reference = go_to_reference
 M.go_to_next_reference = function() go_to_reference('next') end
 M.go_to_previous_reference = function() go_to_reference('prev') end
 
