@@ -111,6 +111,14 @@ local find_pos_array = function(array, predicate)
   return 0
 end
 
+---@param size integer
+---@param current_index integer
+---@param shift integer
+---@return integer
+local shift_index = function(size, current_index, shift)
+  return (current_index + shift - 1) % size + 1
+end
+
 ---@generic T
 ---@generic R
 ---@param array T[]
@@ -173,7 +181,8 @@ M.array = {
   filter = filter_array,
   find_pos = find_pos_array,
   map = map_array,
-  reduce = reduce_array
+  reduce = reduce_array,
+  shift_index = shift_index,
 }
 
 M.math = {

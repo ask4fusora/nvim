@@ -4,7 +4,10 @@ local util = require('util')
 
 ---@param items vim.quickfix.entry[]
 ---@param direction "next" | "prev"
-local get_next_index = function(items, direction)
+---@param count integer
+local get_next_index = function(items, direction, count)
+  count = direction == "next" and count or -count
+
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
   local row, col = cursor_pos[1], cursor_pos[2]
 
@@ -16,18 +19,15 @@ local get_next_index = function(items, direction)
     })
   end)
 
-  local next_index = direction == "next"
-      and current_index % #items
-      or (current_index - 2) % #items
-
-  return 1 + next_index -- 0-index system calculation to 1-index system result
+  return util.array.shift_index(#items, current_index, count)
 end
 
 ---@param references vim.quickfix.entry[]
 ---@param direction 'next' | 'prev'
-local navigate_to_next_reference = function(references, direction)
+---@param count integer
+local navigate_to_next_reference = function(references, direction, count)
   vim.lsp.util.show_document(
-    references[get_next_index(references, direction)].user_data,
+    references[get_next_index(references, direction, count)].user_data,
     vim.bo.fileencoding,
     { reuse_win = true, focus = true }
   )
@@ -68,7 +68,8 @@ local get_position_params = function(client)
 end
 
 ---@param direction "next" | "prev"
-local go_to_reference = function(direction)
+---@param count integer
+local go_to_reference = function(direction, count)
   vim.lsp.buf_request_all(
     vim.api.nvim_get_current_buf(),
     "textDocument/documentHighlight",
@@ -81,13 +82,13 @@ local go_to_reference = function(direction)
         return
       end
 
-      navigate_to_next_reference(references, direction)
+      navigate_to_next_reference(references, direction, count)
     end
   )
 end
 
 M.go_to_reference = go_to_reference
-M.go_to_next_reference = function() go_to_reference('next') end
-M.go_to_previous_reference = function() go_to_reference('prev') end
+M.go_to_next_reference = function() go_to_reference('next', vim.v.count1) end
+M.go_to_previous_reference = function() go_to_reference('prev', vim.v.count1) end
 
 return M
