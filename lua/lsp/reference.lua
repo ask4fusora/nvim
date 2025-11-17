@@ -71,6 +71,8 @@ end
 ---@param direction "next" | "prev"
 ---@param count integer
 local go_to_reference = function(direction, count)
+  count = count or vim.v.count1
+
   vim.lsp.buf_request_all(
     vim.api.nvim_get_current_buf(),
     "textDocument/documentHighlight",
