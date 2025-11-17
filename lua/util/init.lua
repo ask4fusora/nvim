@@ -2,7 +2,8 @@ local M = {
   platform = {},
   array = {},
   debug = {},
-  condition = {}
+  condition = {},
+  math = {}
 }
 
 local print_debug_flat
@@ -14,19 +15,13 @@ print_debug_flat = function(object, parent_prefix)
 
   if type(object) == "table" then
     for key, value in pairs(object) do
-      local current_key ---@type string
+      local current_key = type(key) == "string"
+          and key
+          or tostring(key)
 
-      if type(key) ~= "string" then
-        current_key = tostring(key)
-      end
-
-      if parent_prefix == "" then
-        current_key = key
-      else
-        current_key = "." .. key
-      end
-
-      local full_key = parent_prefix .. current_key
+      local full_key = parent_prefix == ""
+          and current_key
+          or string.format('%s.%s', parent_prefix, current_key)
 
       if type(value) == "table" then
         print_debug_flat(value, full_key)
@@ -87,6 +82,20 @@ local filter_array = function(array, predicate)
   return result
 end
 
+---@generic T
+---@generic R
+---@param array T[] The list to map over.
+---@param transformer fun(item: T, index: integer): R The item transform function.
+---@return table<integer, R> result A new list with the elements that had been transformed.
+local map_array = function(array, transformer)
+  local result = {}
+
+  for i, v in ipairs(array) do
+    table.insert(result, transformer(v, i))
+  end
+
+  return result
+end
 
 ---@generic T
 ---@param array T[] The list to filter.
@@ -100,6 +109,21 @@ local find_pos_array = function(array, predicate)
   end
 
   return 0
+end
+
+---@generic T
+---@generic R
+---@param array T[]
+---@param initial_value R
+---@param reducer fun(reduced_value: R, item: T, index: integer): R
+local reduce_array = function(array, initial_value, reducer)
+  local reduced_value = initial_value
+
+  for i, v in ipairs(array) do
+    reduced_value = reducer(reduced_value, v, i)
+  end
+
+  return reduced_value
 end
 
 local is_git_workspace = function()
@@ -122,6 +146,12 @@ local is_buffer_modifiable = function(bufnr)
   return vim.api.nvim_get_option_value("modifiable", { buf = bufnr })
 end
 
+---@param pivot number
+---@param range { start: number, end: number }
+local is_in_range = function(pivot, range)
+  return range.start <= pivot and pivot <= range['end']
+end
+
 M.condition = {
   is_git_workspace = is_git_workspace,
   is_buffer_name_empty = is_buffer_name_empty,
@@ -141,7 +171,13 @@ M.platform = {
 
 M.array = {
   filter = filter_array,
-  find_pos = find_pos_array
+  find_pos = find_pos_array,
+  map = map_array,
+  reduce = reduce_array
+}
+
+M.math = {
+  is_in_range = is_in_range,
 }
 
 return M
