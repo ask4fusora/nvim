@@ -1,4 +1,4 @@
-vim.o.clipboard = vim.o.clipboard .. "unnamedplus,unnamed"
+vim.o.clipboard = table.concat({ vim.o.clipboard }, ",")
 
 vim.o.shellslash = true
 vim.o.isfname = table.concat({ vim.o.isfname, "(", ")" }, ",")
