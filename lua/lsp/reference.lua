@@ -7,8 +7,7 @@ local util = require('util')
 ---@param count integer
 local get_next_index = function(items, direction, count)
   count = direction == "next" and count or -count
-  local cursor_pos = vim.api.nvim_win_get_cursor(0)
-  local row, col = cursor_pos[1], cursor_pos[2]
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
   local current_index = util.array.find_pos(items, function(item)
     -- `character + 1` to convert 0-index col index to 1-index array index
