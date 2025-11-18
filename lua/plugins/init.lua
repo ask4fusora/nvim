@@ -1,6 +1,7 @@
+require("plugins.catppuccin")
+
 vim.defer_fn(
   function()
-    require("plugins.catppuccin")
     require("plugins.lualine")
     require("plugins.fidget")
     require("plugins.telescope")
