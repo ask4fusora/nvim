@@ -16,6 +16,8 @@ local toggle_inlay_hint = function()
   return vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = 0 })
 end
 
+vim.keymap.set('n', '<C-i>', '<C-i>', { noremap = true })
+
 vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })
 
 vim.keymap.set("", "<C-s>", function() vim.cmd.update() end, { silent = true })
