@@ -5,12 +5,24 @@ require("catppuccin").setup({
   integrations = {
     fidget = true,
     telescope = { enabled = true },
+    barbar = true,
   },
 
   transparent_background = true,
 
   custom_highlights = function(colors)
-    return {}
+    return {
+      -- barbar
+
+      BufferCurrent = { bg = colors.base },
+      BufferCurrentMod = { bg = colors.base },
+      BufferCurrentWARN = { bg = colors.base, fg = colors.yellow },
+      BufferCurrentERROR = { bg = colors.base, fg = colors.red },
+      BufferInactive = { bg = colors.crust },
+      BufferInactiveMod = { bg = colors.crust },
+      BufferInactiveSign = { bg = colors.crust },
+      BufferTabpageFill = { bg = colors.crust }
+    }
   end
 })
 

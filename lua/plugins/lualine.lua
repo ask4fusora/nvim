@@ -8,9 +8,6 @@ local palette = require("catppuccin.palettes").get_palette()
 local catppuccin_options = require("catppuccin").options
 local theme = require("lualine.themes.catppuccin")
 
-local transparent_background = catppuccin_options.transparent_background and "NONE" or palette.crust
-local reversed_text_foreground = catppuccin_options.transparent_background and palette.base or palette.crust
-
 ---@param key string
 local add_section = function(key)
   for _, sections in pairs(theme) do
@@ -25,45 +22,45 @@ add_section("x")
 add_section("y")
 add_section("z")
 
-theme.normal.c.bg = transparent_background
-theme.insert.c.bg = transparent_background
-theme.terminal.c.bg = transparent_background
-theme.command.c.bg = transparent_background
-theme.visual.c.bg = transparent_background
-theme.replace.c.bg = transparent_background
-theme.inactive.c.bg = transparent_background
+theme.normal.c.bg = palette.crust
+theme.insert.c.bg = palette.crust
+theme.terminal.c.bg = palette.crust
+theme.command.c.bg = palette.crust
+theme.visual.c.bg = palette.crust
+theme.replace.c.bg = palette.crust
+theme.inactive.c.bg = palette.crust
 
-theme.normal.x.bg = transparent_background
-theme.insert.x.bg = transparent_background
-theme.terminal.x.bg = transparent_background
-theme.command.x.bg = transparent_background
-theme.visual.x.bg = transparent_background
-theme.replace.x.bg = transparent_background
-theme.inactive.x.bg = transparent_background
+theme.normal.x.bg = palette.crust
+theme.insert.x.bg = palette.crust
+theme.terminal.x.bg = palette.crust
+theme.command.x.bg = palette.crust
+theme.visual.x.bg = palette.crust
+theme.replace.x.bg = palette.crust
+theme.inactive.x.bg = palette.crust
 
-theme.normal.y = { bg = palette.blue, fg = reversed_text_foreground }
-theme.insert.y = { bg = palette.green, fg = reversed_text_foreground }
-theme.terminal.y = { bg = palette.green, fg = reversed_text_foreground }
-theme.command.y = { bg = palette.peach, fg = reversed_text_foreground }
-theme.visual.y = { bg = palette.mauve, fg = reversed_text_foreground }
-theme.replace.y = { bg = palette.red, fg = reversed_text_foreground }
-theme.inactive.y = { bg = transparent_background, fg = reversed_text_foreground }
+theme.normal.y = { bg = palette.blue, fg = palette.crust }
+theme.insert.y = { bg = palette.green, fg = palette.crust }
+theme.terminal.y = { bg = palette.green, fg = palette.crust }
+theme.command.y = { bg = palette.peach, fg = palette.crust }
+theme.visual.y = { bg = palette.mauve, fg = palette.crust }
+theme.replace.y = { bg = palette.red, fg = palette.crust }
+theme.inactive.y = { bg = palette.crust, fg = palette.crust }
 
-theme.normal.z.bg = transparent_background
-theme.insert.z.bg = transparent_background
-theme.terminal.z.bg = transparent_background
-theme.command.z.bg = transparent_background
-theme.visual.z.bg = transparent_background
-theme.replace.z.bg = transparent_background
-theme.inactive.z.bg = transparent_background
+theme.normal.z.bg = palette.crust
+theme.insert.z.bg = palette.crust
+theme.terminal.z.bg = palette.crust
+theme.command.z.bg = palette.crust
+theme.visual.z.bg = palette.crust
+theme.replace.z.bg = palette.crust
+theme.inactive.z.bg = palette.crust
 
-theme.normal.z.bg = transparent_background
-theme.insert.z.bg = transparent_background
-theme.terminal.z.bg = transparent_background
-theme.command.z.bg = transparent_background
-theme.visual.z.bg = transparent_background
-theme.replace.z.bg = transparent_background
-theme.inactive.z.bg = transparent_background
+theme.normal.z.bg = palette.crust
+theme.insert.z.bg = palette.crust
+theme.terminal.z.bg = palette.crust
+theme.command.z.bg = palette.crust
+theme.visual.z.bg = palette.crust
+theme.replace.z.bg = palette.crust
+theme.inactive.z.bg = palette.crust
 
 local condition = require('util').condition
 

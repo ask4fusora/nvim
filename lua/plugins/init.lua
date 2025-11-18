@@ -3,6 +3,7 @@ require("plugins.catppuccin")
 vim.defer_fn(
   function()
     require("plugins.lualine")
+    require("plugins.barbar")
     require("plugins.fidget")
     require("plugins.telescope")
     require("plugins.nvim-treesitter")
