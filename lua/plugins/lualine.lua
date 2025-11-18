@@ -9,6 +9,7 @@ local catppuccin_options = require("catppuccin").options
 local theme = require("lualine.themes.catppuccin")
 
 local transparent_background = catppuccin_options.transparent_background and "NONE" or palette.crust
+local reversed_text_foreground = catppuccin_options.transparent_background and palette.base or palette.crust
 
 ---@param key string
 local add_section = function(key)
@@ -40,13 +41,13 @@ theme.visual.x.bg = transparent_background
 theme.replace.x.bg = transparent_background
 theme.inactive.x.bg = transparent_background
 
-theme.normal.y = { bg = palette.blue, fg = transparent_background }
-theme.insert.y = { bg = palette.green, fg = transparent_background }
-theme.terminal.y = { bg = palette.green, fg = transparent_background }
-theme.command.y = { bg = palette.peach, fg = transparent_background }
-theme.visual.y = { bg = palette.mauve, fg = transparent_background }
-theme.replace.y = { bg = palette.red, fg = transparent_background }
-theme.inactive.y = { bg = transparent_background, fg = transparent_background }
+theme.normal.y = { bg = palette.blue, fg = reversed_text_foreground }
+theme.insert.y = { bg = palette.green, fg = reversed_text_foreground }
+theme.terminal.y = { bg = palette.green, fg = reversed_text_foreground }
+theme.command.y = { bg = palette.peach, fg = reversed_text_foreground }
+theme.visual.y = { bg = palette.mauve, fg = reversed_text_foreground }
+theme.replace.y = { bg = palette.red, fg = reversed_text_foreground }
+theme.inactive.y = { bg = transparent_background, fg = reversed_text_foreground }
 
 theme.normal.z.bg = transparent_background
 theme.insert.z.bg = transparent_background

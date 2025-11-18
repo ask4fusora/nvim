@@ -7,6 +7,8 @@ require("catppuccin").setup({
     telescope = { enabled = true },
   },
 
+  transparent_background = true,
+
   custom_highlights = function(colors)
     return {}
   end
