@@ -6,6 +6,11 @@ require("catppuccin").setup({
     fidget = true,
     telescope = { enabled = true },
     barbar = true,
+    dropbar = {
+      enabled = true,
+      color_mode = true,
+    },
+    treesitter_context = true,
   },
 
   transparent_background = true,

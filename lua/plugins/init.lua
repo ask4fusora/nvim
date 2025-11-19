@@ -9,6 +9,8 @@ vim.defer_fn(
     require("plugins.nvim-treesitter")
     require("plugins.yazi")
     require("plugins.zen-mode")
+    require("plugins.dropbar")
+    require("plugins.nvim-treesitter-context")
     -- require("plugins.neoscroll")
     -- require("plugins.copilot")
     require("plugins.zeta")
