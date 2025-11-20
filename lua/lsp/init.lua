@@ -22,7 +22,7 @@ vim.lsp.enable({
   "basedpyright",
   "ruff",
   "tombi",
-  "taplo",
+  -- "taplo",
   "powershell-es",
   -- "typescript-language-server",
   "vtsls",
