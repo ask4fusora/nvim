@@ -1,5 +1,21 @@
 local util = require("util")
 
+local auto_newline = function()
+  local line = vim.api.nvim_get_current_line()
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+
+  local char_before = line:sub(col, col)
+  local char_after = line:sub(col + 1, col + 1)
+
+  if (char_before == '{' and char_after == '}')
+      or (char_before == '(' and char_after == ')')
+      or (char_before == '[' and char_after == ']') then
+    return "<CR><Esc>O"
+  end
+
+  return "<CR>"
+end
+
 local buffer_close = function(to_save)
   if not util.condition.is_buffer_modifiable()
       or util.condition.is_buffer_name_empty() then
@@ -17,6 +33,8 @@ local toggle_inlay_hint = function()
 end
 
 vim.keymap.set('n', '<C-i>', '<C-i>', { noremap = true })
+
+vim.keymap.set('i', '<CR>', auto_newline, { expr = true, noremap = true })
 
 vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })
 

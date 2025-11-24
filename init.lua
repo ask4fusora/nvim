@@ -20,7 +20,10 @@ vim.o.winborder = "rounded"
 
 vim.o.completeopt = "fuzzy,menu,menuone,noinsert,popup"
 
-vim.o.smartindent = true
+vim.o.autoindent = true
+vim.o.smartindent = false
+vim.o.cindent = false
+
 vim.o.ff = "unix"
 
 vim.o.swapfile = false

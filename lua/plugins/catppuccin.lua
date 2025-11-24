@@ -12,6 +12,11 @@ require("catppuccin").setup({
     },
     treesitter_context = true,
     vim_sneak = true,
+    nvim_surround = true,
+    gitsigns = {
+      enabled = true,
+      transparent = true,
+    },
   },
 
   transparent_background = true,
@@ -27,7 +32,11 @@ require("catppuccin").setup({
       BufferInactive = { bg = colors.crust },
       BufferInactiveMod = { bg = colors.crust },
       BufferInactiveSign = { bg = colors.crust },
-      BufferTabpageFill = { bg = colors.crust }
+      BufferTabpageFill = { bg = colors.crust },
+
+      -- vim-exchange
+
+      ExchangeRegion = { bg = colors.surface1 },
     }
   end
 })

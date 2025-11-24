@@ -1,3 +1,5 @@
+local util = require('util')
+
 -- yank utils
 
 vim.api.nvim_create_autocmd({ "VimEnter", "CursorMoved" }, {
@@ -18,7 +20,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(args)
     local bufnr = args.buf
 
-    if not vim.api.nvim_get_option_value("modifiable", { buf = bufnr }) then return end
+    if not util.condition.is_buffer_modifiable()
+        or util.condition.is_buffer_name_empty() then
+      return
+    end
 
     local editorconfig = require("editorconfig")
 
