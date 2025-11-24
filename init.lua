@@ -15,6 +15,8 @@ vim.o.signcolumn = "yes:1"
 vim.o.cursorline = true
 
 vim.o.wrap = false
+vim.o.scrolloff = 8
+vim.o.sidescrolloff = 8
 
 vim.o.winborder = "rounded"
 
