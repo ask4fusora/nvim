@@ -1,7 +1,6 @@
 vim.pack.add({
   { src = "https://github.com/romgrk/barbar.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
-  { src = "https://github.com/nvim-web-devicons" },
 })
 
 vim.g.barbar_auto_setup = false

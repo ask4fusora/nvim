@@ -1,7 +1,4 @@
-vim.pack.add({
-  { src = "https://github.com/nvim-tree/nvim-web-devicons" },
-  { src = "https://github.com/nvim-lualine/lualine.nvim" }
-})
+vim.pack.add({ { src = "https://github.com/nvim-lualine/lualine.nvim" } })
 
 local lualine = require("lualine")
 local palette = require("catppuccin.palettes").get_palette()

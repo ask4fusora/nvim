@@ -1,4 +1,5 @@
 require("plugins.catppuccin")
+require('plugins.nvim-web-devicons')
 require("plugins.lualine")
 require("plugins.barbar")
 require("plugins.fidget")
