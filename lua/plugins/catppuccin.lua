@@ -11,6 +11,7 @@ require("catppuccin").setup({
       color_mode = true,
     },
     treesitter_context = true,
+    vim_sneak = true,
   },
 
   transparent_background = true,
