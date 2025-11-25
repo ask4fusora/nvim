@@ -6,8 +6,10 @@ local function load_project_settings()
   local root_directory = vim.fs.root(buffer_id, root_marker)
   local neovim_configuration_directory = vim.fs.joinpath(root_directory, root_marker)
 
-  if vim.fn.isdirectory(neovim_configuration_directory) == 0 then return end
-  if string.find(vim.o.runtimepath, neovim_configuration_directory) then return end
+  if vim.fn.isdirectory(neovim_configuration_directory) == 0
+      or string.find(vim.o.runtimepath, neovim_configuration_directory) then
+    return
+  end
 
   vim.o.runtimepath = vim.o.runtimepath .. "," .. neovim_configuration_directory
 
@@ -17,7 +19,13 @@ local function load_project_settings()
 
   local success, error_message = pcall(dofile, init_lua)
 
-  if success then return end
+  if success then
+    vim.api.nvim_create_user_command('NeovimOpenProjectSettings', function()
+      vim.cmd.edit({ init_lua })
+    end, {})
+
+    return
+  end
 
   vim.notify(
     "[Neovim] Project configurations failed to load: " .. error_message .. ".",
