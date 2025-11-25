@@ -17,6 +17,7 @@ require("catppuccin").setup({
       enabled = true,
       transparent = true,
     },
+    render_markdown = true,
   },
 
   transparent_background = true,
