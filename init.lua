@@ -37,6 +37,7 @@ vim.o.termguicolors = true
 vim.o.undofile = true
 
 vim.o.incsearch = true
+vim.o.smartcase = true
 
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0

@@ -1,6 +1,6 @@
 local util = require("util")
 
-local auto_newline = function()
+local auto_newline_in_bracket_pair = function()
   local line = vim.api.nvim_get_current_line()
   local col = vim.api.nvim_win_get_cursor(0)[2]
 
@@ -24,7 +24,7 @@ local buffer_close = function(to_save)
   end
 
   if to_save then vim.cmd.update() end
-  vim.cmd.bd({ bang = to_save })
+  vim.cmd.bd({ bang = not to_save })
 end
 
 local toggle_inlay_hint = function()
@@ -34,9 +34,7 @@ end
 
 vim.keymap.set('n', '<C-i>', '<C-i>', { noremap = true })
 
-vim.keymap.set('i', '<CR>', auto_newline, { expr = true, noremap = true })
-
-vim.keymap.set("n", "<ESC>", function() vim.cmd.noh() end, { silent = true })
+vim.keymap.set('i', '<CR>', auto_newline_in_bracket_pair, { expr = true, noremap = true })
 
 vim.keymap.set("", "<C-s>", function() vim.cmd.update() end, { silent = true })
 vim.keymap.set("n", "ZQ", function() buffer_close() end)

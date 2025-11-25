@@ -1,5 +1,15 @@
 local util = require('util')
 
+-- nohlsearch
+
+vim.api.nvim_create_autocmd('CmdlineEnter', {
+  callback = function() vim.o.hlsearch = true end
+})
+
+vim.api.nvim_create_autocmd('CmdlineEnter', {
+  callback = function() vim.o.hlsearch = false end
+})
+
 -- yank utils
 
 vim.api.nvim_create_autocmd({ "VimEnter", "CursorMoved" }, {
