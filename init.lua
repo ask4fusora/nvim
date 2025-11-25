@@ -3,6 +3,8 @@ vim.o.clipboard = table.concat({ "unnamedplus", "unnamed" }, ",")
 vim.o.shellslash = true
 vim.o.isfname = table.concat({ vim.o.isfname, "(", ")" }, ",")
 
+vim.o.textwidth = 89
+
 vim.o.expandtab = true
 vim.o.shiftwidth = 2
 vim.o.tabstop = 2
