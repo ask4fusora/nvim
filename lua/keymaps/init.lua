@@ -63,3 +63,5 @@ vim.keymap.set('n', '<C-S-;>', toggle_inlay_hint)
 
 vim.keymap.set("n", "cd", function() vim.lsp.buf.rename() end)
 vim.keymap.set("n", "g.", function() vim.lsp.buf.code_action() end)
+
+vim.keymap.set('n', '<C-k>z', function() vim.o.wrap = not vim.o.wrap end)
