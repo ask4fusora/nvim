@@ -67,7 +67,7 @@ end
 ---@param document_highlight_augroup integer
 local create_clear_document_highlight_autocmd = function(bufnr, document_highlight_augroup)
   vim.api.nvim_create_autocmd('User', {
-    pattern = { 'CwordChanged', 'TokenChanged' },
+    pattern = { 'NormalLeave', 'TokenChanged' },
     group = document_highlight_augroup,
     callback = clear_document_highlight
   })
