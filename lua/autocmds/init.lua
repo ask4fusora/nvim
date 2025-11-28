@@ -1,5 +1,9 @@
 local util = require('util')
 
+-- dispatchers
+
+require('autocmds.dispatchers')
+
 -- nohlsearch
 
 vim.api.nvim_create_autocmd('CmdlineEnter', {

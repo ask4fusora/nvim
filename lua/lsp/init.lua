@@ -34,14 +34,13 @@ vim.lsp.enable({
 local setup_lsp_capabilities = function(client, args)
   -- Completion
 
-  if client.server_capabilities.completionProvider then
+  if client:supports_method('textDocument/completion') then
     vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
   end
 
   -- Inlay hint
 
-  if client.server_capabilities.inlayHintProvider
-      and vim.g.is_inlay_hint_auto then
+  if client:supports_method('textDocument/inlayHint') and vim.g.is_inlay_hint_auto then
     vim.api.nvim_create_autocmd("ModeChanged", {
       buffer = args.buf,
       callback = function()
@@ -53,70 +52,13 @@ local setup_lsp_capabilities = function(client, args)
 
   -- DocumentHighlight
 
-  if client.server_capabilities.documentHighlightProvider then
-    vim.o.updatetime = 89
-
-    local unique_id = tostring(client.id) .. tostring(args.buf)
-
-    local document_highlight_augroup = vim.api.nvim_create_augroup(
-      "DocumentHighlight" .. unique_id,
-      { clear = true }
-    )
-
-    local global_request_id = nil ---@type integer?
-
-    vim.api.nvim_create_autocmd({ "CursorHold" }, {
-      group = document_highlight_augroup,
-      buffer = args.buf,
-      callback = function()
-        local params = vim.lsp.util.make_position_params(nil, client.offset_encoding)
-        local local_request_id = nil ---@type integer?
-
-        local status, request_id = client:request(
-          'textDocument/documentHighlight',
-          params,
-          function(err, result, context, config)
-            if global_request_id ~= local_request_id then return end
-
-            if result then
-              vim.lsp.handlers['textDocument/documentHighlight'](err, result, context, config)
-            end
-          end,
-          args.buf
-        )
-
-        if status then
-          global_request_id = request_id
-          local_request_id = request_id
-        end
-      end
-    })
-
-    vim.api.nvim_create_autocmd({ "BufLeave", "CursorMoved", "CursorMovedI" }, {
-      group = document_highlight_augroup,
-      buffer = args.buf,
-      callback = function()
-        vim.lsp.buf.clear_references()
-        global_request_id = nil
-      end
-    })
-
-    vim.api.nvim_create_autocmd('LspDetach', {
-      group = vim.api.nvim_create_augroup('LspDetach' .. unique_id, { clear = true }),
-      buffer = args.buf,
-      callback = function(lsp_detach_args)
-        if assert(lsp_detach_args.data.client_id) == client.id then
-          global_request_id = nil
-          vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds({ group = document_highlight_augroup, buffer = args.buf })
-        end
-      end
-    })
+  if client:supports_method('textDocument/documentHighlight') then
+    require('lsp.document-highlight').setup_lsp_document_highlight(args, client)
   end
 
   -- DocumentFormatting
 
-  if client.server_capabilities.documentFormattingProvider then
+  if client:supports_method('textDocument/formatting') then
     local lsp_format_on_save_augroup = vim.api.nvim_create_augroup("LspFormatOnSave", { clear = false })
 
     vim.api.nvim_create_autocmd("BufWritePre", {
