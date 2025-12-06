@@ -26,7 +26,8 @@ vim.lsp.enable({
   "powershell-es",
   -- "typescript-language-server",
   "vtsls",
-  "rust-analyzer"
+  "rust-analyzer",
+  "phpactor"
 })
 
 ---@param client vim.lsp.Client
