@@ -27,7 +27,7 @@ vim.lsp.enable({
   -- "typescript-language-server",
   "vtsls",
   "rust-analyzer",
-  "phpactor"
+  "intelephense"
 })
 
 ---@param client vim.lsp.Client
