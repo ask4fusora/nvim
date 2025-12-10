@@ -27,7 +27,7 @@ vim.lsp.enable({
   -- "typescript-language-server",
   "vtsls",
   "rust-analyzer",
-  "intelephense"
+  "phptools"
 })
 
 ---@param client vim.lsp.Client
@@ -54,7 +54,7 @@ local setup_lsp_capabilities = function(client, args)
   -- DocumentHighlight
 
   if client:supports_method('textDocument/documentHighlight') then
-    require('lsp.document-highlight').setup_lsp_document_highlight(args, client)
+    -- require('lsp.document-highlight').setup_lsp_document_highlight(args, client)
   end
 
   -- DocumentFormatting
