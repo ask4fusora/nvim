@@ -27,7 +27,8 @@ vim.lsp.enable({
   -- "typescript-language-server",
   "vtsls",
   "rust-analyzer",
-  "phptools"
+  "phptools",
+  'omnisharp'
 })
 
 ---@param client vim.lsp.Client
