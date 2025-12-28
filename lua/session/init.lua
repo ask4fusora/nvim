@@ -65,13 +65,14 @@ local session_group = vim.api.nvim_create_augroup("NativeSession", { clear = tru
 
 vim.api.nvim_create_autocmd("VimEnter", {
   group = session_group,
+  nested = true,
   callback = function()
     if vim.fn.argc() ~= 0 then return end
 
     local session_path = get_session_path()
 
     if vim.fn.filereadable(session_path) == 1 then
-      vim.defer_fn(load_session, 1)
+      load_session()
     end
   end,
 })
