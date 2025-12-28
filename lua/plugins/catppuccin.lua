@@ -1,7 +1,8 @@
 vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
 
 require("catppuccin").setup({
-  auto_integrations = true,
+  auto_integrations = false,
+
   integrations = {
     fidget = true,
     telescope = { enabled = true },
