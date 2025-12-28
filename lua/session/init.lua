@@ -43,24 +43,6 @@ local load_session = function()
   end
 end
 
-local delete_session = function()
-  local session_path = get_session_path()
-
-  if vim.fn.filereadable(session_path) == 1 then
-    vim.fn.delete(session_path)
-  end
-end
-
-vim.api.nvim_create_user_command("SessionSave", save_session, {})
-vim.api.nvim_create_user_command("SessionLoad", load_session, {})
-vim.api.nvim_create_user_command("SessionDelete", delete_session, {})
-
-local opts = { noremap = true, silent = true }
-
-vim.keymap.set("n", "<leader>ss", save_session, vim.tbl_extend("force", opts, { desc = "[S]ession [S]ave" }))
-vim.keymap.set("n", "<leader>sl", load_session, vim.tbl_extend("force", opts, { desc = "[S]ession [L]oad" }))
-vim.keymap.set("n", "<leader>sd", delete_session, vim.tbl_extend("force", opts, { desc = "[S]ession [D]elete" }))
-
 local session_group = vim.api.nvim_create_augroup("NativeSession", { clear = true })
 
 vim.api.nvim_create_autocmd("VimEnter", {
