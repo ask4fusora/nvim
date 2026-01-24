@@ -56,11 +56,20 @@ local function load_module(module_name)
     loading_modules[module_name] = nil
 end
 
----@param module_name string The module path to require (e.g., "plugins.telescope").
-local function schedule_load_module(module_name)
-    vim.schedule(function()
-        load_module(module_name)
-    end)
+---@param command string
+---@param command_args vim.api.keyset.create_user_command.command_args
+local function replay_user_command(command, command_args)
+    local range = command_args.range ~= 0
+        and { command_args.line1, command_args.line2 }
+        or nil
+
+    vim.api.nvim_cmd({
+        cmd = command,
+        args = command_args.fargs,
+        bang = command_args.bang,
+        range = range,
+        mods = command_args.smods,
+    }, {})
 end
 
 ---@param module_names string[] List of module names to load.
@@ -90,13 +99,12 @@ local function add(module_names)
                         keymap.mode,
                         keymap.lhs,
                         function()
-                            vim.keymap.del(keymap.mode, keymap.lhs)
-                            schedule_load_module(module_name)
-
-                            vim.notify(
-                                ("Module `%s` has just been lazily loaded. "
-                                    .. "Please try the keymap again."):format(
-                                    module_name))
+                            vim.schedule(function()
+                                vim.keymap.del(keymap.mode, keymap.lhs)
+                                load_module(module_name)
+                                local lhs = vim.keycode(keymap.lhs)
+                                vim.api.nvim_feedkeys(lhs, 'm', false)
+                            end)
                         end,
                         {
                             desc = ("VimPack: Lazy load `%s`.").format(
@@ -111,12 +119,9 @@ local function add(module_names)
                 for _, event in ipairs(trigger.events) do
                     vim.api.nvim_create_autocmd(event, {
                         callback = function()
-                            schedule_load_module(module_name)
-
-                            vim.notify(
-                                ("Module `%s` has just been lazily loaded. "
-                                    .. "Please trigger the autocmd again.")
-                                :format(module_name))
+                            vim.schedule(function()
+                                load_module(module_name)
+                            end)
                         end,
                         once = true,
                         desc = ("VimPack: Lazy load `%s`."):format(module_name),
@@ -130,16 +135,18 @@ local function add(module_names)
                 for _, command in ipairs(trigger.user_commands) do
                     vim.api.nvim_create_user_command(
                         command,
-                        function()
-                            vim.api.nvim_del_user_command(command)
-                            schedule_load_module(module_name)
-
-                            vim.notify(
-                                ("Module `%s` has just been lazily loaded. "
-                                    .. "Please trigger the command again.")
-                                :format(module_name))
+                        function(command_args)
+                            vim.schedule(function()
+                                vim.api.nvim_del_user_command(command)
+                                load_module(module_name)
+                                replay_user_command(command, command_args)
+                            end)
                         end,
-                        {})
+                        {
+                            nargs = "*",
+                            bang = true,
+                            range = true,
+                        })
                 end
             end
 
@@ -149,12 +156,9 @@ local function add(module_names)
                     vim.api.nvim_create_autocmd("FileType", {
                         pattern = file_type,
                         callback = function()
-                            schedule_load_module(module_name)
-
-                            vim.notify(
-                                ("Module `%s` has just been lazily loaded. "
-                                    .. "Please trigger the command again.")
-                                :format(module_name))
+                            vim.schedule(function()
+                                load_module(module_name)
+                            end)
                         end,
                         once = true,
                     })
@@ -166,7 +170,7 @@ local function add(module_names)
             total_triggers = total_triggers + 1
             vim.defer_fn(
                 function()
-                    schedule_load_module(module_name)
+                    load_module(module_name)
                 end,
                 config.defer_ms)
         end
