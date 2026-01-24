@@ -2,7 +2,7 @@ local conditions = require("libs.conditions")
 
 -- dispatchers
 
-require('autocmds.dispatchers')
+require('libs.autocmds.dispatchers.normal-leave').setup()
 
 -- nohlsearch
 
