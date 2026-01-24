@@ -41,7 +41,6 @@ end
 local function setup(sessionoptions)
     vim.o.sessionoptions = table.concat(sessionoptions or {
         "buffers",
-        "help",
         "folds",
         "winsize",
         "curdir",
