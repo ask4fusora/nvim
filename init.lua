@@ -2,7 +2,11 @@ vim.api.nvim_create_user_command('NeovimOpenSettings', function()
     vim.cmd.edit({ vim.fn.stdpath('config') })
 end, {})
 
-vim.o.clipboard = table.concat({ "unnamedplus", "unnamed" }, ",")
+local conditions = require('libs.conditions')
+
+if conditions.is_windows() then
+    vim.g.clipboard = "win32yank"
+end
 
 vim.o.shellslash = true
 vim.o.isfname = table.concat({ vim.o.isfname, "(", ")" }, ",")
