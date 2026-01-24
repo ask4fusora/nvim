@@ -7,7 +7,19 @@ return {
     },
     dependencies = { "plugins.nvim-web-devicons" },
     trigger      = {
-        events = { "LspAttach", "BufEnter", "BufWinEnter", "BufReadPost", "BufNewFile" }
+        events = { "LspAttach", "BufEnter", "BufWinEnter", "BufReadPost", "BufNewFile" },
+        keymaps = {
+            { mode = 'n', lhs = '<C-P>' },
+            { mode = 'n', lhs = '<C-S-P>' },
+            { mode = 'n', lhs = 'g/' },
+            { mode = 'n', lhs = '	' },
+            { mode = 'n', lhs = 'gA' },
+            { mode = 'n', lhs = 'g.' },
+            { mode = 'n', lhs = 'gs' },
+            { mode = 'n', lhs = 'gS' },
+            { mode = 'n', lhs = '<leader>h' },
+            { mode = 'n', lhs = '<F1>' },
+        }
     },
     config       = function()
         local builtin = require('telescope.builtin')
