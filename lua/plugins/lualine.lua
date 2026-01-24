@@ -62,7 +62,7 @@ return {
         theme.replace.z.bg = palette.crust
         theme.inactive.z.bg = palette.crust
 
-        local condition = require('util').condition
+        local conditions = require("libs.conditions")
 
         local config = {
             options = {
@@ -124,7 +124,7 @@ return {
 
         insert_c {
             'filename',
-            cond = function() return not condition.is_buffer_name_empty() end,
+            cond = function() return not conditions.is_buffer_name_empty() end,
             color = function()
                 if vim.bo.modified then
                     return { fg = palette.yellow }

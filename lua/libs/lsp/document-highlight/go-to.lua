@@ -1,6 +1,7 @@
 local M = {}
 
-local util = require('util')
+local array = require('libs.language_extensions.array')
+local math = require('libs.math')
 
 ---@param items vim.quickfix.entry[]
 ---@param direction "next" | "prev"
@@ -9,17 +10,17 @@ local get_next_index = function(items, direction, count)
     count = direction == "next" and count or -count
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
 
-    local current_index = util.array.find_pos(items, function(item)
+    local current_index = array.find_pos(items, function(item)
         -- `character + 1` to convert 0-index col index to 1-index array index
         return
             item.lnum == row
-            and util.math.is_in_range(col + 1, {
+            and math.is_in_range(col + 1, {
                 start = item.col,
                 ['end'] = item.end_col,
             })
     end)
 
-    return util.array.shift_index(#items, current_index, count)
+    return array.shift_index(#items, current_index, count)
 end
 
 ---@param document_highlights vim.quickfix.entry[]
@@ -40,7 +41,7 @@ local get_document_highlights_from_lsp_result = function(result, context)
     local client = assert(vim.lsp.get_client_by_id(context.client_id))
 
     return vim.lsp.util.locations_to_items(
-        util.array.map(result, function(document_highlight)
+        array.map(result, function(document_highlight)
             ---@type lsp.Location
             return { uri = context.params.textDocument.uri, range = document_highlight.range }
         end),
@@ -51,7 +52,7 @@ end
 ---@param results table<integer, { err: (lsp.ResponseError)?, result: any, context: lsp.HandlerContext }>
 ---@return vim.quickfix.entry[]
 local get_all_document_highlights = function(results)
-    return util.array.reduce(results, {}, function(document_highlights, result)
+    return array.reduce(results, {}, function(document_highlights, result)
         return vim.list_extend(
             document_highlights,
             get_document_highlights_from_lsp_result(result.result or {}, result.context)

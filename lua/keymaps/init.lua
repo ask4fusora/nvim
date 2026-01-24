@@ -1,35 +1,35 @@
-local util = require("util")
+local conditions = require("libs.conditions")
 
 local auto_newline_in_bracket_pair = function()
-  local line = vim.api.nvim_get_current_line()
-  local col = vim.api.nvim_win_get_cursor(0)[2]
+    local line = vim.api.nvim_get_current_line()
+    local col = vim.api.nvim_win_get_cursor(0)[2]
 
-  local char_before = line:sub(col, col)
-  local char_after = line:sub(col + 1, col + 1)
+    local char_before = line:sub(col, col)
+    local char_after = line:sub(col + 1, col + 1)
 
-  if (char_before == '{' and char_after == '}')
-      or (char_before == '(' and char_after == ')')
-      or (char_before == '[' and char_after == ']') then
-    return "<CR><Esc>O"
-  end
+    if (char_before == '{' and char_after == '}')
+        or (char_before == '(' and char_after == ')')
+        or (char_before == '[' and char_after == ']') then
+        return "<CR><Esc>O"
+    end
 
-  return "<CR>"
+    return "<CR>"
 end
 
 local buffer_close = function(to_save)
-  if not util.condition.is_buffer_modifiable()
-      or util.condition.is_buffer_name_empty() then
-    vim.cmd.bd({ bang = true })
-    return
-  end
+    if not conditions.is_buffer_modifiable()
+        or conditions.is_buffer_name_empty() then
+        vim.cmd.bd({ bang = true })
+        return
+    end
 
-  if to_save then vim.cmd.update() end
-  vim.cmd.bd({ bang = not to_save })
+    if to_save then vim.cmd.update() end
+    vim.cmd.bd({ bang = not to_save })
 end
 
 local toggle_inlay_hint = function()
-  local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
-  return vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = 0 })
+    local is_enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+    return vim.lsp.inlay_hint.enable(not is_enabled, { bufnr = 0 })
 end
 
 vim.keymap.set('n', '<C-i>', '<C-i>', { noremap = true })
@@ -45,13 +45,13 @@ vim.keymap.set("n", "] ", function() for _ = 1, vim.v.count1 do vim.fn.append(vi
 vim.keymap.set("n", "[ ", function() for _ = 1, vim.v.count1 do vim.fn.append(vim.fn.line(".") - 1, { "" }) end end)
 vim.keymap.set("", "<M-F>", function() vim.lsp.buf.format({ async = true }) end)
 
-if require("util").platform.windows() then vim.keymap.set("i", "<F13>", "<C-x><C-o>", { noremap = true, silent = true }) end
+if conditions.is_windows() then vim.keymap.set("i", "<F13>", "<C-x><C-o>", { noremap = true, silent = true }) end
 local tab_accept = function() return vim.fn.pumvisible() == 1 and "<C-y>" or "<Tab>" end
 vim.keymap.set("i", "<Tab>", tab_accept, { expr = true, noremap = true })
 
-vim.keymap.set("n", "[r", require("lsp.reference").go_to_previous_reference)
-vim.keymap.set("n", "]r", require("lsp.reference").go_to_next_reference)
-vim.keymap.set("n", "gd", require("lsp.definition").go_to_definition)
+vim.keymap.set("n", "[h", require("libs.lsp.document-highlight.go-to").go_to_previous_document_highlight)
+vim.keymap.set("n", "[h", require("libs.lsp.document-highlight.go-to").go_to_previous_document_highlight)
+vim.keymap.set("n", "gd", require("libs.lsp.definition.go-to").go_to_definition)
 vim.keymap.set("n", "gy", function() vim.lsp.buf.type_definition() end)
 vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end)
 vim.keymap.set("n", "gI", function() vim.lsp.buf.implementation() end)
