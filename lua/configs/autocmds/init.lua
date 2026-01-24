@@ -1,7 +1,9 @@
 local conditions = require("libs.conditions")
 
-require("configs.autocmds.dispatchers")
-require("configs.autocmds.events")
+vim.schedule(function()
+    require("configs.autocmds.dispatchers")
+    require("configs.autocmds.events")
+end)
 
 -- editorconfig
 
