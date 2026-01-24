@@ -1,6 +1,6 @@
 local M = {}
 
-local array = require('libs.language_extensions.array')
+local array = require('libs.language_extension.array')
 local math = require('libs.math')
 
 ---@param items vim.quickfix.entry[]
