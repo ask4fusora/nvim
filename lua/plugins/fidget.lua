@@ -1,14 +1,19 @@
-vim.pack.add({ { src = "https://github.com/j-hui/fidget.nvim" } })
+---@type VimPack.Config
+return {
+    specs = { { src = "https://github.com/j-hui/fidget.nvim" } },
+    dependencies = { 'plugins.catppuccin', 'plugins.nvim-web-devicons' },
+    config = function()
+        local fidget = require("fidget")
 
-local fidget = require("fidget")
+        fidget.setup({
+            notification = {
+                window = {
+                    winblend = 0,
+                    align = "top"
+                }
+            }
+        })
 
-fidget.setup({
-  notification = {
-    window = {
-      winblend = 0,
-      align = "top"
-    }
-  }
-})
-
-vim.notify = fidget.notify
+        vim.notify = fidget.notify
+    end
+}

@@ -1,46 +1,50 @@
-vim.pack.add({ { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } })
+---@type VimPack.Config
+return {
+    specs = { { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } },
+    config = function()
+        require("catppuccin").setup({
+            auto_integrations = false,
 
-require("catppuccin").setup({
-  auto_integrations = false,
+            integrations = {
+                fidget = true,
+                telescope = { enabled = true },
+                barbar = true,
+                dropbar = {
+                    enabled = true,
+                    color_mode = true,
+                },
+                treesitter_context = true,
+                vim_sneak = true,
+                nvim_surround = true,
+                gitsigns = {
+                    enabled = true,
+                    transparent = true,
+                },
+                render_markdown = true,
+            },
 
-  integrations = {
-    fidget = true,
-    telescope = { enabled = true },
-    barbar = true,
-    dropbar = {
-      enabled = true,
-      color_mode = true,
-    },
-    treesitter_context = true,
-    vim_sneak = true,
-    nvim_surround = true,
-    gitsigns = {
-      enabled = true,
-      transparent = true,
-    },
-    render_markdown = true,
-  },
+            transparent_background = true,
 
-  transparent_background = true,
+            custom_highlights = function(colors)
+                return {
+                    -- barbar
 
-  custom_highlights = function(colors)
-    return {
-      -- barbar
+                    BufferCurrent = { bg = colors.base },
+                    BufferCurrentMod = { bg = colors.base },
+                    BufferCurrentWARN = { bg = colors.base, fg = colors.yellow },
+                    BufferCurrentERROR = { bg = colors.base, fg = colors.red },
+                    BufferInactive = { bg = colors.crust },
+                    BufferInactiveMod = { bg = colors.crust },
+                    BufferInactiveSign = { bg = colors.crust },
+                    BufferTabpageFill = { bg = colors.crust },
 
-      BufferCurrent = { bg = colors.base },
-      BufferCurrentMod = { bg = colors.base },
-      BufferCurrentWARN = { bg = colors.base, fg = colors.yellow },
-      BufferCurrentERROR = { bg = colors.base, fg = colors.red },
-      BufferInactive = { bg = colors.crust },
-      BufferInactiveMod = { bg = colors.crust },
-      BufferInactiveSign = { bg = colors.crust },
-      BufferTabpageFill = { bg = colors.crust },
+                    -- vim-exchange
 
-      -- vim-exchange
+                    ExchangeRegion = { bg = colors.surface1 },
+                }
+            end
+        })
 
-      ExchangeRegion = { bg = colors.surface1 },
-    }
-  end
-})
-
-vim.cmd.colorscheme("catppuccin")
+        vim.cmd.colorscheme("catppuccin")
+    end
+}

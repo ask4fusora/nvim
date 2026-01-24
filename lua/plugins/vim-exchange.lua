@@ -1,1 +1,9 @@
-vim.pack.add({ { src = 'https://github.com/tommcdo/vim-exchange' } })
+---@type VimPack.Config
+return {
+    specs = {
+        { src = "https://github.com/tommcdo/vim-exchange" },
+    },
+    trigger = {
+        events = { "VimEnter" }
+    }
+}

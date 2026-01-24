@@ -1,25 +1,29 @@
-require("plugins.catppuccin")
-require('plugins.nvim-web-devicons')
-require("plugins.lualine")
-require("plugins.barbar")
-require("plugins.fidget")
-require("plugins.telescope")
-require("plugins.nvim-treesitter-context")
-require("plugins.nvim-treesitter-textobjects")
-require("plugins.nvim-treesitter")
-require("plugins.yazi")
-require("plugins.zen-mode")
-require("plugins.vim-sneak")
-require("plugins.vim-exchange")
-require("plugins.nvim-surround")
-require("plugins.vim-indentwise")
-require("plugins.dropbar")
--- require("plugins.neoscroll")
--- require("plugins.copilot")
-require("plugins.lspkind")
-require("plugins.mini-completion")
-require('plugins.mini-ai')
-require("plugins.gitsigns")
-require("plugins.typst-preview")
-require("plugins.markdown-preview")
-require("plugins.render-markdown")
+-- require("fast_loader").enable()
+
+local vim_pack = require("libs.vim_pack")
+
+vim_pack.add({
+    "plugins.nvim-web-devicons",
+    "plugins.catppuccin",
+    "plugins.fidget",
+    "plugins.lualine",
+    "plugins.barbar",
+    "plugins.zen-mode",
+    "plugins.dropbar",
+    "plugins.nvim-treesitter",
+    "plugins.nvim-treesitter-context",
+    "plugins.nvim-treesitter-textobjects",
+    "plugins.gitsigns",
+    "plugins.telescope",
+    "plugins.yazi",
+    "plugins.vim-sneak",
+    "plugins.vim-exchange",
+    "plugins.nvim-surround",
+    "plugins.vim-indentwise",
+    "plugins.mini-ai",
+    "plugins.lspkind",
+    "plugins.mini-completion",
+    "plugins.typst-preview",
+    "plugins.markdown-preview",
+    "plugins.render-markdown",
+})

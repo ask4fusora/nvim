@@ -1,1 +1,9 @@
-vim.pack.add({ { src = "https://github.com/iamcco/markdown-preview.nvim" } })
+---@type VimPack.Config
+return {
+    specs = {
+        { src = "https://github.com/iamcco/markdown-preview.nvim" },
+    },
+    trigger = {
+        file_types = { "markdown" },
+    },
+}
