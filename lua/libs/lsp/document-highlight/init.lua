@@ -102,7 +102,10 @@ end
 
 ---@param args vim.api.keyset.create_autocmd.callback_args
 ---@param client vim.lsp.Client
-M.setup = function(args, client)
+---@param debounce_ms? integer
+M.setup = function(args, client, debounce_ms)
+    vim.o.updatetime = debounce_ms or 89
+
     local unique_id = tostring(client.id) .. tostring(args.buf)
     local document_highlight_augroup = create_document_highlight_augroup(unique_id)
     local detach_document_highlight_augroup = create_detach_document_highlight_augroup(unique_id)

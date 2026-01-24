@@ -56,18 +56,7 @@ local setup_lsp_capabilities = function(client, args)
     -- DocumentHighlight
 
     if client:supports_method('textDocument/documentHighlight') then
-        vim.o.updatetime = 89
-
-        vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer = args.buf,
-            callback = vim.lsp.buf.document_highlight
-        })
-        vim.api.nvim_create_autocmd('CursorMoved', {
-            buffer = args.buf,
-            callback = vim.lsp.buf.clear_references
-        })
-
-        -- require("libs.lsp.document-highlight").setup(args, client)
+        require("libs.lsp.document-highlight").setup(args, client)
     end
 
     -- DocumentFormatting
