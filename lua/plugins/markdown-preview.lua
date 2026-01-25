@@ -5,5 +5,13 @@ return {
     },
     trigger = {
         file_types = { "markdown" },
+        user_commands = {
+            "MarkdownPreview",
+            "MarkdownPreviewToggle",
+            "MarkdownPreviewStop"
+        }
     },
+    config = function()
+        vim.fn["mkdp#util#install"]()
+    end
 }
